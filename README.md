@@ -1,0 +1,2 @@
+# psychiatric_5min_consultation
+5分診療について

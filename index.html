@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>精神科はなぜ「5分診療」なのか — KBC スタッフ向け図解</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root {
+    --navy: #1a2a4a;
+    --navy-mid: #243560;
+    --cream: #f8f5ef;
+    --cream-dark: #ede8df;
+    --amber: #c8702a;
+    --amber-light: #e8904a;
+    --red: #b83838;
+    --green: #2d7a5a;
+    --blue-mid: #2e5f9a;
+    --gray-text: #4a4a5a;
+    --border: #d0c8bc;
+    --white: #ffffff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream);
+    color: var(--navy);
+    font-family: 'Noto Serif JP', serif;
+    line-height: 1.8;
+    font-size: 15px;
+  }
+
+  /* =========== PROGRESS BAR =========== */
+  #progress-bar {
+    position: fixed; top: 0; left: 0; height: 3px;
+    background: var(--amber); width: 0%; z-index: 999;
+    transition: width 0.1s linear;
+  }
+
+  /* =========== NAV =========== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(26,42,74,0.96);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 52px;
+  }
+  nav .nav-title {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12px; font-weight: 500;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.05em;
+  }
+  nav .nav-links { display: flex; gap: 1.5rem; }
+  nav .nav-links a {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 11px; color: rgba(255,255,255,0.5);
+    text-decoration: none; letter-spacing: 0.06em;
+    transition: color 0.2s;
+  }
+  nav .nav-links a:hover { color: var(--amber-light); }
+
+  /* =========== MAIN WRAPPER =========== */
+  .page { padding-top: 52px; }
+
+  /* =========== SECTION BASE =========== */
+  section { padding: 4rem 0; }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 2rem; }
+  .container-wide { max-width: 1000px; margin: 0 auto; padding: 0 2rem; }
+
+  /* =========== HERO =========== */
+  .hero {
+    background: var(--navy);
+    padding: 5rem 0 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 59px,
+      rgba(255,255,255,0.03) 59px, rgba(255,255,255,0.03) 60px
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 59px,
+      rgba(255,255,255,0.03) 59px, rgba(255,255,255,0.03) 60px
+    );
+  }
+  .hero-inner { position: relative; z-index: 1; }
+  .hero-tag {
+    display: inline-block;
+    background: var(--amber); color: var(--white);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.15em;
+    padding: 4px 12px; border-radius: 2px;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.35;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.01em;
+  }
+  .hero h1 span { color: var(--amber-light); }
+  .hero-lead {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px; font-weight: 300;
+    color: rgba(255,255,255,0.7);
+    max-width: 560px;
+    line-height: 1.9;
+    margin-bottom: 2.5rem;
+  }
+  .hero-meta {
+    display: flex; gap: 2rem; flex-wrap: wrap;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 1.5rem;
+  }
+  .hero-meta-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: rgba(255,255,255,0.4);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .hero-meta-item i { color: var(--amber); }
+
+  /* =========== SECTION HEADER =========== */
+  .sec-header {
+    display: flex; align-items: flex-start; gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .sec-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    color: var(--amber);
+    background: var(--navy);
+    padding: 4px 10px;
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+  .sec-title { font-size: 1.6rem; font-weight: 700; line-height: 1.3; }
+  .sec-sub {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px; color: var(--gray-text);
+    margin-top: 4px;
+    font-weight: 300;
+  }
+
+  /* =========== DIVIDER =========== */
+  .divider {
+    width: 100%; height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+    margin: 0;
+  }
+
+  /* =========== SECTION BG VARIANTS =========== */
+  .bg-white { background: var(--white); }
+  .bg-cream { background: var(--cream); }
+  .bg-cream-dark { background: var(--cream-dark); }
+  .bg-navy { background: var(--navy); }
+  .bg-navy * { color: inherit; }
+
+  /* =========== CALLOUT BOX =========== */
+  .callout {
+    border-left: 4px solid var(--amber);
+    background: rgba(200,112,42,0.06);
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .callout.critical { border-color: var(--red); background: rgba(184,56,56,0.06); }
+  .callout.info { border-color: var(--blue-mid); background: rgba(46,95,154,0.06); }
+  .callout.positive { border-color: var(--green); background: rgba(45,122,90,0.06); }
+  .callout p { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; line-height: 1.85; }
+  .callout-title {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 700; font-size: 12px;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  /* =========== PATIENT TIMELINE =========== */
+  .timeline { position: relative; margin: 2rem 0; }
+  .timeline::before {
+    content: ''; position: absolute; left: 28px; top: 0; bottom: 0;
+    width: 2px; background: var(--border);
+  }
+  .tl-item {
+    display: flex; gap: 1.5rem; margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .tl-icon {
+    width: 56px; height: 56px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0; z-index: 1;
+    border: 2px solid var(--border);
+    background: var(--white);
+    color: var(--navy-mid);
+  }
+  .tl-icon.highlight {
+    background: var(--navy); color: var(--white); border-color: var(--navy);
+  }
+  .tl-icon.warn { background: var(--amber); color: var(--white); border-color: var(--amber); }
+  .tl-icon.danger { background: var(--red); color: var(--white); border-color: var(--red); }
+  .tl-body { padding-top: 10px; flex: 1; }
+  .tl-time {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--amber); font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .tl-label {
+    font-weight: 600; font-size: 15px; margin-bottom: 4px;
+  }
+  .tl-desc {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px; color: var(--gray-text); line-height: 1.7;
+  }
+
+  /* =========== BIG STAT =========== */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 1.5rem; margin: 2rem 0; }
+  .stat-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+  .stat-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 2.8rem; font-weight: 500;
+    color: var(--navy); line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-num span { font-size: 1.4rem; color: var(--amber); }
+  .stat-label {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12px; color: var(--gray-text);
+    line-height: 1.5;
+  }
+  .stat-card.accent-red .stat-num { color: var(--red); }
+  .stat-card.accent-amber .stat-num { color: var(--amber); }
+  .stat-card.accent-green .stat-num { color: var(--green); }
+
+  /* =========== FLOW DIAGRAM =========== */
+  .flow { display: flex; flex-direction: column; gap: 0; margin: 2rem 0; }
+  .flow-row { display: flex; align-items: stretch; gap: 0; }
+  .flow-box {
+    flex: 1; background: var(--white);
+    border: 1px solid var(--border);
+    padding: 1.2rem 1.5rem;
+    position: relative;
+  }
+  .flow-box.active { background: var(--navy); border-color: var(--navy); }
+  .flow-box.active * { color: var(--white) !important; }
+  .flow-box.warn { background: rgba(200,112,42,0.08); border-color: var(--amber); }
+  .flow-arrow {
+    display: flex; align-items: center; padding: 0 8px;
+    font-size: 18px; color: var(--border);
+  }
+  .flow-label {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--amber);
+    margin-bottom: 4px;
+  }
+  .flow-title { font-weight: 600; font-size: 14px; }
+  .flow-desc {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12px; color: var(--gray-text);
+    margin-top: 4px; line-height: 1.6;
+  }
+  .flow-down { display: flex; justify-content: center; padding: 6px 0; }
+  .flow-down i { color: var(--border); font-size: 16px; }
+
+  /* =========== POINTS TABLE =========== */
+  .points-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+  .points-table th {
+    background: var(--navy); color: var(--white);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12px; font-weight: 500;
+    padding: 10px 14px; text-align: left;
+    letter-spacing: 0.05em;
+  }
+  .points-table td {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px; padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .points-table tr:last-child td { border-bottom: none; }
+  .points-table tr:nth-child(even) td { background: var(--cream); }
+  .pts {
+    font-family: 'DM Mono', monospace;
+    font-weight: 500; font-size: 15px;
+    color: var(--navy);
+  }
+  .pts.high { color: var(--green); }
+  .pts.low { color: var(--red); }
+
+  /* =========== ACCORDION =========== */
+  .accordion { margin: 1rem 0; }
+  .acc-item {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 8px;
+    transition: box-shadow 0.2s;
+  }
+  .acc-item:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .acc-toggle {
+    width: 100%; background: var(--white);
+    border: none; cursor: pointer;
+    padding: 1rem 1.2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    text-align: left;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 14px; font-weight: 600;
+    color: var(--navy);
+    transition: background 0.2s;
+  }
+  .acc-toggle:hover { background: var(--cream); }
+  .acc-toggle i.chevron { transition: transform 0.3s; font-size: 12px; color: var(--amber); }
+  .acc-toggle.open i.chevron { transform: rotate(180deg); }
+  .acc-toggle .acc-icon { margin-right: 10px; color: var(--blue-mid); }
+  .acc-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.35s ease;
+    background: var(--cream);
+  }
+  .acc-body.open { max-height: 600px; }
+  .acc-content {
+    padding: 1rem 1.2rem 1.2rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13.5px; line-height: 1.85;
+    color: var(--gray-text);
+    border-top: 1px solid var(--border);
+  }
+
+  /* =========== COMPARE TABLE =========== */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0; }
+  .compare-card {
+    border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .compare-header {
+    padding: 12px 16px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.06em;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .compare-header.jp { background: var(--navy); color: var(--white); }
+  .compare-header.eu { background: var(--green); color: var(--white); }
+  .compare-body { padding: 1rem; background: var(--white); }
+  .compare-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--cream-dark);
+    font-family: 'Noto Sans JP', sans-serif; font-size: 13px;
+  }
+  .compare-row:last-child { border-bottom: none; }
+  .compare-row i { width: 16px; text-align: center; flex-shrink: 0; }
+  .compare-row i.bad { color: var(--red); }
+  .compare-row i.good { color: var(--green); }
+
+  /* =========== VISUAL BAR =========== */
+  .bar-chart { margin: 1.5rem 0; }
+  .bar-row { margin-bottom: 1rem; }
+  .bar-label {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12px; margin-bottom: 5px;
+    display: flex; justify-content: space-between;
+    color: var(--gray-text);
+  }
+  .bar-label strong { color: var(--navy); font-weight: 600; }
+  .bar-track {
+    height: 10px; background: var(--cream-dark);
+    border-radius: 5px; overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%; border-radius: 5px;
+    transition: width 1.2s ease;
+  }
+  .bar-fill.navy { background: var(--navy); }
+  .bar-fill.amber { background: var(--amber); }
+  .bar-fill.red { background: var(--red); }
+  .bar-fill.green { background: var(--green); }
+
+  /* =========== HIGHLIGHT QUOTE =========== */
+  .big-quote {
+    border-left: 5px solid var(--navy);
+    padding: 1.2rem 1.5rem;
+    margin: 2rem 0;
+    background: var(--white);
+  }
+  .big-quote p {
+    font-size: 1.1rem; font-weight: 500;
+    line-height: 1.7; color: var(--navy);
+  }
+  .big-quote cite {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12px; color: var(--gray-text);
+    margin-top: 8px; display: block;
+    font-style: normal;
+  }
+
+  /* =========== STAFF TIPS =========== */
+  .tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 1rem; margin: 2rem 0; }
+  .tip-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-top: 3px solid var(--navy);
+    padding: 1.2rem;
+    border-radius: 0 0 8px 8px;
+    transition: transform 0.2s;
+  }
+  .tip-card:hover { transform: translateY(-2px); }
+  .tip-card .tip-icon {
+    font-size: 20px; color: var(--navy);
+    margin-bottom: 10px;
+  }
+  .tip-card h4 {
+    font-size: 14px; font-weight: 700;
+    margin-bottom: 8px; line-height: 1.4;
+  }
+  .tip-card p {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12.5px; color: var(--gray-text); line-height: 1.75;
+  }
+
+  /* =========== CRITICAL PERSPECTIVE =========== */
+  .crit-box {
+    background: var(--navy);
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 2rem 0;
+    color: var(--white);
+  }
+  .crit-box h3 {
+    font-size: 15px; font-weight: 700;
+    color: var(--amber-light);
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .crit-box ul {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .crit-box li {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13.5px; line-height: 1.75;
+    color: rgba(255,255,255,0.82);
+    padding-left: 1.2rem; position: relative;
+  }
+  .crit-box li::before {
+    content: '▸'; position: absolute; left: 0;
+    color: var(--amber);
+  }
+
+  /* =========== HISTORY TIMELINE =========== */
+  .hist-timeline { margin: 2rem 0; position: relative; }
+  .hist-item {
+    display: flex; gap: 1.5rem;
+    margin-bottom: 1.5rem; position: relative;
+  }
+  .hist-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px; font-weight: 500;
+    color: var(--white); background: var(--navy-mid);
+    padding: 4px 10px;
+    height: fit-content;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .hist-body {
+    border-left: 2px solid var(--border);
+    padding-left: 1.2rem;
+    flex: 1;
+  }
+  .hist-body h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .hist-body p {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px; color: var(--gray-text); line-height: 1.75;
+  }
+  .hist-body .hist-tag {
+    display: inline-block;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 2px;
+    margin-bottom: 6px;
+  }
+  .tag-law { background: rgba(26,42,74,0.12); color: var(--navy); }
+  .tag-problem { background: rgba(184,56,56,0.12); color: var(--red); }
+  .tag-reform { background: rgba(45,122,90,0.12); color: var(--green); }
+
+  /* =========== REFS =========== */
+  .refs { background: var(--navy); padding: 3rem 0; }
+  .refs .sec-title { color: var(--white); }
+  .refs .sec-num { background: var(--amber); color: var(--white); }
+  .ref-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 1.5rem; }
+  .ref-list li {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12.5px; color: rgba(255,255,255,0.65);
+    padding-left: 1.2rem; position: relative;
+    line-height: 1.7;
+  }
+  .ref-list li::before { content: '—'; position: absolute; left: 0; color: var(--amber); }
+  .ref-list a { color: rgba(255,255,255,0.65); }
+  .ref-list a:hover { color: var(--amber-light); }
+
+  /* =========== FOOTER =========== */
+  footer {
+    background: #0e1724; padding: 1.5rem 2rem;
+    text-align: center;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 11px; color: rgba(255,255,255,0.3);
+    letter-spacing: 0.05em;
+  }
+
+  /* =========== ANIMATION =========== */
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* =========== RESPONSIVE =========== */
+  @media (max-width: 640px) {
+    .compare { grid-template-columns: 1fr; }
+    .stat-grid { grid-template-columns: repeat(2,1fr); }
+    nav .nav-links { display: none; }
+    .hero h1 { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<nav>
+  <span class="nav-title">KBC スタッフ向け図解｜精神科「5分診療」の構造</span>
+  <div class="nav-links">
+    <a href="#patient">患者の現実</a>
+    <a href="#system">制度の仕組み</a>
+    <a href="#history">歴史的背景</a>
+    <a href="#compare">国際比較</a>
+    <a href="#staff">支援への示唆</a>
+    <a href="#refs">参考資料</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="container hero-inner">
+    <span class="hero-tag">STAFF EDUCATION MATERIAL</span>
+    <h1>精神科はなぜ<br><span>「5分診療」</span>と<br>言われるのか</h1>
+    <p class="hero-lead">
+      利用者から「先生には5分しか話せない」という声を聞いたことはないでしょうか。
+      これは医師個人の怠慢ではありません。診療報酬制度・人員配置基準・
+      精神医療の歴史が複合的に絡み合った、構造的な問題です。
+    </p>
+    <div class="hero-meta">
+      <span class="hero-meta-item"><i class="fa-solid fa-layer-group"></i> 制度・歴史・国際比較</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 0. WHAT IS THE PROBLEM ===== -->
+<section class="bg-cream" style="padding:3rem 0 2rem;">
+  <div class="container fade-up">
+    <div class="big-quote">
+      <p>「待ち時間は1〜2時間。でも診察は5分で終わる。薬の調子を聞かれて『変わりありません』と答えたら、もう次の人の番だった。」</p>
+      <cite>— 精神科外来患者の典型的な体験（複数の当事者証言より）</cite>
+    </div>
+    <div class="callout critical">
+      <div class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i> この図解の立場</div>
+      <p>「5分診療は悪だ」という単純な批判ではありません。この問題は医師個人の問題ではなく、<strong>制度設計の問題</strong>です。スタッフとして構造を理解することで、利用者支援の質が変わります。</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 1. PATIENT EXPERIENCE ===== -->
+<section class="bg-white" id="patient">
+  <div class="container fade-up">
+    <div class="sec-header">
+      <span class="sec-num">01</span>
+      <div>
+        <div class="sec-title">患者が体験する「診察日の現実」</div>
+        <div class="sec-sub">典型的な精神科外来の1日を追う</div>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-icon"><i class="fa-regular fa-calendar"></i></div>
+        <div class="tl-body">
+          <div class="tl-time">1〜4週間前</div>
+          <div class="tl-label">予約を入れる</div>
+          <div class="tl-desc">多くの精神科外来では次回予約まで2〜4週間待ちが標準。急に状態が悪化しても「予約日まで待って」と言われることも多い。</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-icon warn"><i class="fa-solid fa-hourglass-half"></i></div>
+        <div class="tl-body">
+          <div class="tl-time">当日 待ち時間：30分〜2時間</div>
+          <div class="tl-label">受付・待合室で待機</div>
+          <div class="tl-desc">精神科外来の待ち時間は長い。医師1人が1日30〜60人以上を診るため、予約時間通りに呼ばれることは少ない。待合室での精神的消耗も見逃せない。</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-icon danger"><i class="fa-solid fa-stopwatch"></i></div>
+        <div class="tl-body">
+          <div class="tl-time">診察時間：平均 3〜10分</div>
+          <div class="tl-label">「5分診療」の現場</div>
+          <div class="tl-desc">研究によれば精神科再診の平均診察時間は5〜10分程度。「体調はどうですか」→「変わりありません」→「では薬を続けましょう」で終わるパターンが多い。</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-icon"><i class="fa-solid fa-prescription-bottle-medical"></i></div>
+        <div class="tl-body">
+          <div class="tl-time">処方内容の確認・薬局</div>
+          <div class="tl-label">投薬が診療の中心になる</div>
+          <div class="tl-desc">診察時間が短いため、心理的なサポートや生活への助言は後回しになりやすい。「薬だけもらいに行く場所」という認識が患者・家族の間に広まっている。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title"><i class="fa-solid fa-lightbulb"></i> 就労移行との接点</div>
+      <p>「先生には言えていない」ことが多くある理由がここにあります。利用者が就労移行スタッフへ話すことと、主治医へ話せることの間に大きなギャップが生まれる構造的背景です。</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 2. SYSTEM ===== -->
+<section class="bg-cream-dark" id="system">
+  <div class="container fade-up">
+    <div class="sec-header">
+      <span class="sec-num">02</span>
+      <div>
+        <div class="sec-title">診療報酬制度という<br>経済的構造</div>
+        <div class="sec-sub">なぜ長く話せないのか——制度の中身を分解する</div>
+      </div>
+    </div>
+
+    <p style="font-family:'Noto Sans JP',sans-serif; font-size:14px; line-height:1.85; color:var(--gray-text); margin-bottom:1.5rem;">
+      日本の医療費は<strong>「出来高払い」</strong>が基本です。医師が行った医療行為のひとつひとつに「点数」がつき、それが収入になります。精神科も例外ではありません。ここに「5分診療」の経済的根拠があります。
+    </p>
+
+    <div class="flow">
+      <div class="flow-row">
+        <div class="flow-box">
+          <div class="flow-label">ステップ 1</div>
+          <div class="flow-title"><i class="fa-solid fa-stethoscope" style="margin-right:6px;color:var(--blue-mid)"></i>医師が患者を診察する</div>
+          <div class="flow-desc">問診・所見・処方などを行う</div>
+        </div>
+      </div>
+      <div class="flow-down"><i class="fa-solid fa-arrow-down"></i></div>
+      <div class="flow-row">
+        <div class="flow-box">
+          <div class="flow-label">ステップ 2</div>
+          <div class="flow-title"><i class="fa-solid fa-calculator" style="margin-right:6px;color:var(--blue-mid)"></i>行為ごとに「診療報酬点数」が計算される</div>
+          <div class="flow-desc">1点＝10円。点数が収入に直結する</div>
+        </div>
+      </div>
+      <div class="flow-down"><i class="fa-solid fa-arrow-down"></i></div>
+      <div class="flow-row">
+        <div class="flow-box active">
+          <div class="flow-label">ステップ 3 ← ここが問題</div>
+          <div class="flow-title">「通院精神療法」の点数構造</div>
+          <div class="flow-desc">診察時間によって点数が変わる——短くても一定の点数がとれる</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-size:14px; font-weight:700; margin:2rem 0 1rem;">通院精神療法の点数比較（2024年時点・概略）</h3>
+    <table class="points-table">
+      <thead>
+        <tr>
+          <th>診察時間</th>
+          <th>算定項目</th>
+          <th>点数</th>
+          <th>収入換算（1点10円）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>5分以上30分未満</strong></td>
+          <td>通院精神療法（短時間）</td>
+          <td><span class="pts low">330〜400点前後</span></td>
+          <td>3,300〜4,000円前後</td>
+        </tr>
+        <tr>
+          <td><strong>30分以上</strong></td>
+          <td>通院精神療法（標準）</td>
+          <td><span class="pts high">+50〜100点の加算</span></td>
+          <td>差額500〜1,000円程度</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout critical">
+      <div class="callout-title"><i class="fa-solid fa-magnifying-glass-chart"></i> 経営的な計算</div>
+      <p>
+        30分間1人を診ても、5分間で6人を診ても、後者の方が収入は圧倒的に多くなります。<br>
+        30分延ばして加算されるのは500〜1,000円程度なのに、1人余計に診れば3,000〜4,000円の収入が増えます。<br>
+        これが診療を短くする<strong>経済的インセンティブ（動機づけ）</strong>です。
+      </p>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card accent-red">
+        <div class="stat-num">5<span>分</span></div>
+        <div class="stat-label">5分以上あれば「通院精神療法」として算定可能</div>
+      </div>
+      <div class="stat-card accent-amber">
+        <div class="stat-num">30<span>分</span></div>
+        <div class="stat-label">30分以上でやっと加算。しかし差額はわずか</div>
+      </div>
+      <div class="stat-card accent-green">
+        <div class="stat-num">6<span>倍</span></div>
+        <div class="stat-label">5分×6人 vs 30分×1人の患者数差。収入は前者が多い</div>
+      </div>
+    </div>
+
+    <div class="accordion">
+      <div class="acc-item">
+        <button class="acc-toggle" onclick="toggleAcc(this)">
+          <span><i class="fa-solid fa-circle-question acc-icon"></i>「もっと点数を上げれば解決では？」という疑問</span>
+          <i class="fa-solid fa-chevron-down chevron"></i>
+        </button>
+        <div class="acc-body">
+          <div class="acc-content">
+            部分的には正しい方向です。実際、2022年・2024年の診療報酬改定で精神科の通院精神療法は一部増点されています。しかし問題の根は深く、点数を少し上げるだけでは変わりません。そもそも精神科外来の患者数が非常に多く（うつ病・不安障害・発達障害の増加）、医師数の絶対量が不足しているという需給の問題も根底にあります。また、長時間の精神療法を行える研修を受けた精神科医が少ないという人材面の問題もあります。
+          </div>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-toggle" onclick="toggleAcc(this)">
+          <span><i class="fa-solid fa-circle-question acc-icon"></i>「カウンセリング（心理士）に任せればいいのでは？」</span>
+          <i class="fa-solid fa-chevron-down chevron"></i>
+        </button>
+        <div class="acc-body">
+          <div class="acc-content">
+            理想的にはそうです。しかし日本では公認心理師・臨床心理士によるカウンセリングへの「保険適用」が非常に限定的です。欧米では精神科医は主に薬物療法を担当し、心理士が心理療法（認知行動療法など）を担うという分業体制が確立されています。日本では公認心理師への診療報酬は一部に限られており、患者が自費でカウンセリングを受けるのは経済的に大きな負担になります。これも制度的な問題です。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 3. HISTORY ===== -->
+<section class="bg-white" id="history">
+  <div class="container fade-up">
+    <div class="sec-header">
+      <span class="sec-num">03</span>
+      <div>
+        <div class="sec-title">「精神科特例」という<br>歴史的遺産</div>
+        <div class="sec-sub">1958年に作られた特例が、今も精神医療に影を落とす</div>
+      </div>
+    </div>
+
+    <p style="font-family:'Noto Sans JP',sans-serif; font-size:14px; line-height:1.85; color:var(--gray-text); margin-bottom:2rem;">
+      診療報酬だけが問題ではありません。日本の精神医療には、<strong>「精神科特例」</strong>と呼ばれる人員配置基準の緩和措置が長く存在し、精神科には少ない医師・看護師でも病院を運営できる仕組みが作られてきました。
+    </p>
+
+    <div class="callout info">
+      <div class="callout-title"><i class="fa-solid fa-book-open"></i> 「精神科特例」とは</div>
+      <p>1958年（昭和33年）の厚生省通知により設けられた配置基準の緩和措置。精神科病院では、一般病院の基準より少ない医師・看護師数で認可されていました。</p>
+    </div>
+
+    <h3 style="font-size:13px; font-weight:700; color:var(--gray-text); letter-spacing:0.06em; margin-bottom:1rem;">医師配置基準の比較</h3>
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label"><strong>一般病院</strong><span>患者16人に医師1人</span></div>
+        <div class="bar-track"><div class="bar-fill navy" style="width:100%"></div></div>
+      </div>
+      <div class="bar-row" style="margin-top:12px;">
+        <div class="bar-label"><strong>精神科特例（旧基準）</strong><span>患者48人に医師1人</span></div>
+        <div class="bar-track"><div class="bar-fill red" style="width:33%"></div></div>
+      </div>
+    </div>
+    <p style="font-family:'Noto Sans JP',sans-serif; font-size:12px; color:var(--gray-text); margin-top:4px;">※バーの長さが「1人あたり医師の手厚さ」を示す（長いほど手厚い）</p>
+
+    <div class="hist-timeline" style="margin-top:2rem;">
+      <div class="hist-item">
+        <div class="hist-year">1950年</div>
+        <div class="hist-body">
+          <span class="hist-tag tag-law">法律</span>
+          <h4>精神衛生法の制定</h4>
+          <p>戦後初の精神医療法制。「措置入院」制度が設けられ、強制的な隔離・管理が法的に整備された。精神疾患患者を社会から「隔離する」発想が土台に。</p>
+        </div>
+      </div>
+      <div class="hist-item">
+        <div class="hist-year">1958年</div>
+        <div class="hist-body">
+          <span class="hist-tag tag-problem">問題の起点</span>
+          <h4>精神科特例の設定</h4>
+          <p>医師・看護師の配置基準を一般病院より大幅に緩和。これにより、少ない人員で多数の患者を収容できる大規模精神科病院が日本全国に乱立する土台が作られた。</p>
+        </div>
+      </div>
+      <div class="hist-item">
+        <div class="hist-year">1960〜80年代</div>
+        <div class="hist-body">
+          <span class="hist-tag tag-problem">問題の拡大</span>
+          <h4>「社会的入院」の常態化</h4>
+          <p>病状が回復しても退院できない長期入院患者（「社会的入院」）が急増。1980年代には精神科病床数が世界最多水準（人口比）となった。外来診療より入院が収益の柱となる経営モデルが確立。</p>
+        </div>
+      </div>
+      <div class="hist-item">
+        <div class="hist-year">1984年</div>
+        <div class="hist-body">
+          <span class="hist-tag tag-problem">国際問題</span>
+          <h4>宇都宮病院事件</h4>
+          <p>患者への暴行・死亡事件が発覚。閉鎖的な精神科病院の実態が国際的に問題視され、WHOからも批判を受けた。</p>
+        </div>
+      </div>
+      <div class="hist-item">
+        <div class="hist-year">1987年</div>
+        <div class="hist-body">
+          <span class="hist-tag tag-reform">制度改革</span>
+          <h4>精神保健法への改正</h4>
+          <p>患者の人権保護を盛り込んだ法改正。しかし入院中心の体制は変わらず、外来・地域支援への転換は進まなかった。</p>
+        </div>
+      </div>
+      <div class="hist-item">
+        <div class="hist-year">2004年〜</div>
+        <div class="hist-body">
+          <span class="hist-tag tag-reform">方針転換</span>
+          <h4>「入院から地域へ」政策の開始</h4>
+          <p>精神保健福祉改革ビジョンが策定され、長期入院患者の地域移行が政策課題となった。これにより外来患者数が増加し、外来診療の逼迫がより顕在化した。</p>
+        </div>
+      </div>
+      <div class="hist-item">
+        <div class="hist-year">現在</div>
+        <div class="hist-body">
+          <span class="hist-tag tag-problem">継続する課題</span>
+          <h4>外来患者の増加と医師不足</h4>
+          <p>うつ病・不安障害・発達障害の診断増加により外来患者数は増え続けているが、精神科医の絶対数は追いついていない。短時間診療の構造的圧力は今も続いている。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 4. DOCTOR'S DAY ===== -->
+<section class="bg-cream" id="doctor">
+  <div class="container fade-up">
+    <div class="sec-header">
+      <span class="sec-num">04</span>
+      <div>
+        <div class="sec-title">医師側の現実</div>
+        <div class="sec-sub">「5分しか診ない」のではなく「5分しか診られない」</div>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-num">30〜<span>人</span></div>
+        <div class="stat-label">精神科外来医師1人が1日に診る患者数（平均下限）</div>
+      </div>
+      <div class="stat-card accent-amber">
+        <div class="stat-num">50〜60<span>人</span></div>
+        <div class="stat-label">多い場合の1日の外来患者数</div>
+      </div>
+      <div class="stat-card accent-red">
+        <div class="stat-num">6<span>時間</span></div>
+        <div class="stat-label">外来診療時間の目安。50人診れば1人平均7分強</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title"><i class="fa-solid fa-calculator"></i> 単純計算してみると</div>
+      <p>
+        外来時間6時間（360分）÷50人＝<strong>1人あたり7.2分</strong>。<br>
+        ここから電子カルテ入力・処方作成・次回予約の確認を引くと、実際に「話せる時間」は<strong>3〜5分</strong>になります。<br>
+        医師が時間をかけたくても、構造的にかけられない状況があります。
+      </p>
+    </div>
+
+    <div class="crit-box">
+      <h3><i class="fa-solid fa-scale-balanced"></i> 批判的視点：医師を免責するわけではない</h3>
+      <ul>
+        <li>制度の問題が大きいとはいえ、同じ制度下でも「時間をかけて丁寧に診る」精神科医は存在します。</li>
+        <li>患者数を絞って1人ひとりに時間をかける外来運営を選択している医師もいます（ただし経営的に厳しい）。</li>
+        <li>精神科医のコミュニケーション教育・患者中心の診療スキルの不足を指摘する声もあります。</li>
+        <li>「構造のせい」と言い切ることは、現場の医師の努力義務や職業倫理を軽視することにもなりかねません。</li>
+        <li>ただし、問題解決のためには個人への責任転嫁より<strong>制度改革</strong>に焦点を当てることが有効です。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 5. COMPARISON ===== -->
+<section class="bg-white" id="compare">
+  <div class="container fade-up">
+    <div class="sec-header">
+      <span class="sec-num">05</span>
+      <div>
+        <div class="sec-title">国際比較：<br>日本は特殊なのか</div>
+        <div class="sec-sub">欧米の精神医療体制との構造的差異を見る</div>
+      </div>
+    </div>
+
+    <div class="compare">
+      <div class="compare-card">
+        <div class="compare-header jp"><i class="fa-solid fa-torii-gate"></i> 日本の精神科外来</div>
+        <div class="compare-body">
+          <div class="compare-row"><i class="fa-solid fa-xmark bad"></i> 医師が薬物療法＋心理的支援を1人で担当</div>
+          <div class="compare-row"><i class="fa-solid fa-xmark bad"></i> 平均診察時間：5〜10分</div>
+          <div class="compare-row"><i class="fa-solid fa-xmark bad"></i> 心理士への保険給付が限定的</div>
+          <div class="compare-row"><i class="fa-solid fa-xmark bad"></i> 精神科医1人が1日30〜60人を診る</div>
+          <div class="compare-row"><i class="fa-solid fa-check good"></i> 医療費の自己負担（3割・自立支援制度あり）は比較的低い</div>
+          <div class="compare-row"><i class="fa-solid fa-xmark bad"></i> 入院病床数が依然として多い（地域移行の遅れ）</div>
+        </div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-header eu"><i class="fa-solid fa-earth-europe"></i> 欧米の精神科外来（例）</div>
+        <div class="compare-body">
+          <div class="compare-row"><i class="fa-solid fa-check good"></i> 精神科医は薬物療法に特化（分業制）</div>
+          <div class="compare-row"><i class="fa-solid fa-check good"></i> 心理士・セラピストが心理療法を担う</div>
+          <div class="compare-row"><i class="fa-solid fa-check good"></i> 認知行動療法等への保険給付が充実</div>
+          <div class="compare-row"><i class="fa-solid fa-check good"></i> 1回の診察：15〜50分が標準</div>
+          <div class="compare-row"><i class="fa-solid fa-xmark bad"></i> 医療費・保険システムの複雑さ（国による差大）</div>
+          <div class="compare-row"><i class="fa-solid fa-check good"></i> 入院よりコミュニティケアを重視</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-title"><i class="fa-solid fa-globe"></i> 欧米が「良い」というわけでもない</div>
+      <p>欧米でも精神科医不足・待機時間の長さは深刻な問題です（英国NHSでは初診まで数ヶ月待ちも）。また「分業制」が充実していても、セラピストへのアクセスが困難な低所得者層への支援格差があります。「欧米＝理想」という単純化には注意が必要です。</p>
+    </div>
+
+    <h3 style="font-size:14px; font-weight:700; margin:2rem 0 1rem;">精神科病床数の国際比較（人口1,000人あたり・概略）</h3>
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label"><strong>日本</strong><span>約2.6床（世界最多水準）</span></div>
+        <div class="bar-track"><div class="bar-fill red" style="width:100%"></div></div>
+      </div>
+      <div class="bar-row" style="margin-top:12px;">
+        <div class="bar-label"><strong>フランス</strong><span>約0.8床</span></div>
+        <div class="bar-track"><div class="bar-fill navy" style="width:31%"></div></div>
+      </div>
+      <div class="bar-row" style="margin-top:12px;">
+        <div class="bar-label"><strong>英国</strong><span>約0.5床</span></div>
+        <div class="bar-track"><div class="bar-fill navy" style="width:19%"></div></div>
+      </div>
+      <div class="bar-row" style="margin-top:12px;">
+        <div class="bar-label"><strong>イタリア</strong><span>約0.1床</span></div>
+        <div class="bar-track"><div class="bar-fill green" style="width:4%"></div></div>
+      </div>
+    </div>
+    <p style="font-family:'Noto Sans JP',sans-serif; font-size:12px; color:var(--gray-text); margin-top:6px;">出典：OECD Health Statistics（概略値・最新版に近い数値）</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 6. STAFF IMPLICATIONS ===== -->
+<section class="bg-cream-dark" id="staff">
+  <div class="container fade-up">
+    <div class="sec-header">
+      <span class="sec-num">06</span>
+      <div>
+        <div class="sec-title">就労移行スタッフへの示唆</div>
+        <div class="sec-sub">この構造を知ることで、支援の質がどう変わるか</div>
+      </div>
+    </div>
+
+    <p style="font-family:'Noto Sans JP',sans-serif; font-size:14px; line-height:1.85; color:var(--gray-text); margin-bottom:2rem;">
+      「5分診療」の構造を理解することは、利用者批判でも医師批判でもありません。<strong>現実を知った上で、自分たちの支援を正確に位置づける</strong>ためです。
+    </p>
+
+    <div class="tips-grid">
+      <div class="tip-card">
+        <div class="tip-icon"><i class="fa-solid fa-bridge-circle-check"></i></div>
+        <h4>「橋渡し役」としての役割を自覚する</h4>
+        <p>主治医が5分の診察では把握しきれない利用者の日常・変化・困りごとを、スタッフは継続的に観察できます。診察では話せないことが、就労移行の場で出てくることは非常に多いです。</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon"><i class="fa-solid fa-file-medical"></i></div>
+        <h4>医療連携は「報告書」の質で決まる</h4>
+        <p>主治医への情報提供文や連絡票は、短い診察の「補完情報」として機能します。「いつ・どのような状況で・どんな変化があったか」を具体的かつ簡潔に記載することが医師の判断を助けます。</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon"><i class="fa-solid fa-user-shield"></i></div>
+        <h4>利用者が「主治医に言えること」を支援する</h4>
+        <p>「先生には言えない」という状況を当然視しない。受診前に「今日聞きたいことをメモする」支援や、「先生に伝えたいこと」を一緒に整理する練習も就労支援の一部です。</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon"><i class="fa-solid fa-brain"></i></div>
+        <h4>薬の効果・副作用の変化に敏感になる</h4>
+        <p>精神科の薬は外来で短時間で処方・変更されます。日常の観察の中で「今週から眠そう」「集中力が落ちた」などに気づくことが、医師へ伝えるべき重要情報になります。</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon"><i class="fa-solid fa-scale-unbalanced-flip"></i></div>
+        <h4>支援の「過剰補填」に注意する</h4>
+        <p>医師が担うべき判断（服薬調整・診断変更の必要性判断など）をスタッフが代替しようとすることは越権です。「気づき→記録→医師へ伝える」が適切な役割分担です。</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon"><i class="fa-solid fa-comments"></i></div>
+        <h4>利用者に「制度の現実」を適切に伝える</h4>
+        <p>「なぜ先生はもっと話を聞いてくれないの」という怒りや失望は、制度への理解で緩和できることがあります。批判でなく「構造の問題」として伝えることも支援のスキルです。</p>
+      </div>
+    </div>
+
+    <div class="callout positive">
+      <div class="callout-title"><i class="fa-solid fa-seedling"></i> まとめ：就労移行の場が担う意義</div>
+      <p>
+        精神科外来が「5分診療」になりやすい構造の中で、就労移行支援は利用者の<strong>「継続的な観察・関わり・対話」の場</strong>として独自の価値を持ちます。それは医療の代替ではなく、医療と地域をつなぐ不可欠な接点です。制度の限界を知った上で、そこに自分たちの役割を積極的に位置づけることが、専門性の高い支援につながります。
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 7. FUTURE ===== -->
+<section class="bg-white">
+  <div class="container fade-up">
+    <div class="sec-header">
+      <span class="sec-num">07</span>
+      <div>
+        <div class="sec-title">変化の兆しと<br>残る課題</div>
+        <div class="sec-sub">制度は少しずつ動いている</div>
+      </div>
+    </div>
+
+    <div class="accordion">
+      <div class="acc-item">
+        <button class="acc-toggle" onclick="toggleAcc(this)">
+          <span><i class="fa-solid fa-arrow-trend-up acc-icon"></i>診療報酬改定による精神科評価の引き上げ</span>
+          <i class="fa-solid fa-chevron-down chevron"></i>
+        </button>
+        <div class="acc-body">
+          <div class="acc-content">
+            2022年・2024年の診療報酬改定では、精神科の外来管理や継続的な支援に対する評価が一部引き上げられました。特に「精神科在宅患者支援管理料」など、継続的・包括的な支援への評価が強化されています。ただし根本的な診察時間の問題は解決されていません。
+          </div>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-toggle" onclick="toggleAcc(this)">
+          <span><i class="fa-solid fa-arrow-trend-up acc-icon"></i>公認心理師制度の創設（2017年）</span>
+          <i class="fa-solid fa-chevron-down chevron"></i>
+        </button>
+        <div class="acc-body">
+          <div class="acc-content">
+            2017年に公認心理師法が施行され、日本初の心理職国家資格が誕生しました。医療機関での公認心理師によるカウンセリングの保険適用範囲は限定的ですが、今後の拡大が議論されています。精神科医との分業体制構築への第一歩と位置づけられています。
+          </div>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-toggle" onclick="toggleAcc(this)">
+          <span><i class="fa-solid fa-arrow-trend-up acc-icon"></i>地域移行・地域定着支援の拡充</span>
+          <i class="fa-solid fa-chevron-down chevron"></i>
+        </button>
+        <div class="acc-body">
+          <div class="acc-content">
+            精神科病院からの地域移行を支援する「地域移行支援」「地域定着支援」が障害福祉サービスとして整備されています。就労移行支援もこのエコシステムの一部です。外来が担えない継続的支援を地域の支援機関が補完する体制が少しずつ整いつつあります。
+          </div>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-toggle" onclick="toggleAcc(this)">
+          <span><i class="fa-solid fa-triangle-exclamation acc-icon" style="color:var(--red)"></i>依然残る根本課題：精神科医絶対数の不足</span>
+          <i class="fa-solid fa-chevron-down chevron"></i>
+        </button>
+        <div class="acc-body">
+          <div class="acc-content">
+            精神科医の養成数は少なく、地域偏在も深刻です。都市部に精神科医が集中し、地方では精神科受診自体が困難な地域もあります。また、精神科医全体の高齢化も進んでおり、中長期的な医師不足は「5分診療」構造をより深刻にする可能性があります。制度改革と並行した医師養成・キャリア支援が不可欠です。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== REFS ===== -->
+<section class="refs" id="refs">
+  <div class="container">
+    <div class="sec-header">
+      <span class="sec-num" style="background:var(--amber);">REF</span>
+      <div>
+        <div class="sec-title" style="color:var(--white);">参考資料・情報ソース</div>
+        <div class="sec-sub" style="color:rgba(255,255,255,0.5);">クリックでアクセス可能な一次資料</div>
+      </div>
+    </div>
+    <ul class="ref-list">
+      <li>厚生労働省「精神医療の現状」（各年版）<br>
+        <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/kaisei_seisin/" target="_blank">https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/kaisei_seisin/</a>
+      </li>
+      <li>厚生労働省「精神保健福祉資料（630調査）」（各年）<br>
+        <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/630survey/" target="_blank">https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/630survey/</a>
+      </li>
+      <li>中央社会保険医療協議会（中医協）「診療報酬改定の概要」（2024年）<br>
+        <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000188411_00045.html" target="_blank">https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000188411_00045.html</a>
+      </li>
+      <li>OECD Health Statistics「Mental Health Beds in Hospitals」<br>
+        <a href="https://stats.oecd.org/index.aspx?DataSetCode=HEALTH_STAT" target="_blank">https://stats.oecd.org/index.aspx?DataSetCode=HEALTH_STAT</a>
+      </li>
+      <li>日本精神神経学会「精神科医療の提供体制に関する提言」<br>
+        <a href="https://www.jspn.or.jp/modules/advocacy/" target="_blank">https://www.jspn.or.jp/modules/advocacy/</a>
+      </li>
+      <li>国立精神・神経医療研究センター「精神保健研究所 精神医療データベース」<br>
+        <a href="https://www.ncnp.go.jp/nimh/" target="_blank">https://www.ncnp.go.jp/nimh/</a>
+      </li>
+      <li>厚生労働省「障害保健福祉部精神・障害保健課：精神科特例に関する通知の廃止」（2000年代以降の動向）</li>
+      <li>精神保健福祉白書編集委員会『精神保健福祉白書』中央法規出版（各年版）</li>
+      <li>岡崎伸郎ほか「精神科外来における診察時間の実態」精神医学研究（参考文献として）</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <p>作成：岡村雄一郎 ｜ キズキビジネスカレッジ（KBC）スタッフ向け教育資料</p>
+  <p style="margin-top:4px;">本資料は公開情報・学術文献に基づく教育目的の資料です。個別の医療判断の根拠として使用しないでください。</p>
+</footer>
+
+</div><!-- /page -->
+
+<script>
+  // Progress bar
+  const bar = document.getElementById('progress-bar');
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    bar.style.width = (scrollTop / scrollHeight * 100) + '%';
+  });
+
+  // Fade-up on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Accordion
+  function toggleAcc(btn) {
+    const body = btn.nextElementSibling;
+    const isOpen = btn.classList.contains('open');
+    document.querySelectorAll('.acc-toggle.open').forEach(b => {
+      b.classList.remove('open');
+      b.nextElementSibling.classList.remove('open');
+    });
+    if (!isOpen) { btn.classList.add('open'); body.classList.add('open'); }
+  }
+
+  // Animate bars on scroll
+  const barObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.bar-fill').forEach(fill => {
+          const w = fill.style.width;
+          fill.style.width = '0%';
+          setTimeout(() => { fill.style.width = w; }, 100);
+        });
+        barObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.bar-chart').forEach(el => barObs.observe(el));
+</script>
+</body>
+</html>
